@@ -1,0 +1,15 @@
+IU Bloomington, Machine Learning '18 Fall, Programming Project 3
+Shujun Liu (liushuj@iu.edu)
+
+Usage:
+Put the /pp3data folder into this folder and run "task1.py" "task2.py" or "bonus.py" (with python 3.5 or above).
+
+Code structure:
+/core/metrics.py: functions that calculates MSE/classification error rate, and data points on learning curves.
+/core/bingenerative.py: implements the binary generative model, including training and predicting.
+/core/bayeslogistic.py: implements Bayes Logistic Regression with 3 updating methods(Newton, GD and SGD); includes training and predicting.
+/utils/dataset.py: contains a function that randomly splits the dataset for Cross Validation and a function that draw random subset of specified size from the data set.
+/task1.py: code for Task 1.
+/task2.py: code for Task 2, meanwhile performing the same task for Stochastic GD.
+/bonus.py: test different learning rates for Stochastic GD.
+/core/linreg.py: not used; copied from the last programming project.
