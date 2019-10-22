@@ -1,5 +1,3 @@
-IU Bloomington, Machine Learning '18 Fall, Programming Project 4
-Shujun Liu (liushuj@iu.edu)
 
 Usage:
 Just run "task1.py" or "task2.py"(with python 3.5 or above).
