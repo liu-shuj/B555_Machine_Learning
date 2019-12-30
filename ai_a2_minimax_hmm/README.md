@@ -30,28 +30,28 @@ However, it does not perform well when there are more than one ridge-like curve 
 ![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output.jpg?raw=true)
 
 horizon3.py uses the same algorithm as horizon2.py but with human feedback(making emission probability at that pixel to be 100% and 0% for other pixels on the column), more weight is given to smoothness of the possible ridge by adding an multiplication to log of transition probability.
-By adjusting the weight the algorithm seem to perform well for most of the 9 images when provided a pixel on the ridge. At the same time it can be seen that the algorithm acts differently when given different pixel.
+By adjusting the weight the algorithm seem to perform well for most of the 9 images when provided a pixel on the starting(leftmost) position of the ridge. At the same time it can be seen that the algorithm acts differently when given different pixel.
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output1.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output1.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output2.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output2.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output4.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output4.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output5.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output5.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output6.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output6.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output7.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output7.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output8.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output8.jpg?raw=true)
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output9.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output9.jpg?raw=true)
 
 Same picture, given (93,0):
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output3.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output3.jpg?raw=true)
 
 Given (27,32):
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output3_1.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output3_1.jpg?raw=true)
