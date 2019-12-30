@@ -1,0 +1,11 @@
+
+
+Usage:
+Just put the /pp2data folder into this folder and run "taskN.py" (with python 3.5 or above).
+For task3, run with "-v" to trace iteration.
+
+Code structure:
+/core/linreg.py: functions that trains the model using least square / MAP.
+/core/metrics.py: functions that calculates MSE and data for plotting learning curve.
+/utils/dataset.py: contains a function that draw random subset of specified size from the data set.
+/task1(2,3,4).py: code for the corresponding Task.
