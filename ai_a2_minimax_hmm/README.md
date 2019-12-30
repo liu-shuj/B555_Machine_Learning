@@ -25,16 +25,14 @@ The emission probability is set to a value proportional to P(s|w) (because P(s|w
 which is (edge_strength**2)/((edge_strength**2).sum(0)), squared to make brighter pixels on the contrast map more likely to be on the ridge.
 As for the transition probability, I assume here that the difference of index of row of two neighboring pixels on the ridge to be of Gaussian(0,1.33) and transition probability of a row number to another is calculated according to CDF of this Gaussian distribution. Transition to a pixel of more than 12 pixels higher or lower is assumed impossible to speedup calculation.
 
-However, it does not perform well when there are more than one ridge-like curve on an image:
+The problem with it happens when there are more than one ridge-like curve on an image:
 
-![alt text](https://github.iu.edu/cs-b551-fa2019/liushuj-a2/blob/master/part2/output.jpg?raw=true)
+![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output.jpg?raw=true)
 
 horizon3.py uses the same algorithm as horizon2.py but with human feedback(making emission probability at that pixel to be 100% and 0% for other pixels on the column), more weight is given to smoothness of the possible ridge by adding an multiplication to log of transition probability.
 By adjusting the weight the algorithm seem to perform well for most of the 9 images when provided a pixel on the starting(leftmost) position of the ridge. At the same time it can be seen that the algorithm acts differently when given different pixel.
 
 ![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output1.jpg?raw=true)
-
-![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output2.jpg?raw=true)
 
 ![alt text](https://github.com/liu-shuj/ML-and-AI-codes/blob/master/ai_a2_minimax_hmm/part2/output4.jpg?raw=true)
 
