@@ -1,0 +1,208 @@
+#!/usr/local/bin/python3
+#
+# hide.py : a simple friend-hider
+#
+# Submitted by : [PUT YOUR NAME AND USERNAME HERE]
+#
+# Based on skeleton code by D. Crandall and Z. Kachwala, 2019
+#
+# The problem to be solved is this:
+# Given a campus map, find a placement of F friends so that no two can find one another.
+#
+
+import sys
+import random
+from math import floor 
+from copy import deepcopy
+
+# Parse the map from a given filename
+def parse_map(filename):
+	with open(filename, "r") as f:
+		return [[char for char in line] for line in f.read().split("\n")]
+
+# Count total # of friends on board
+def count_friends(board):
+    return sum([ row.count('F') for row in board ] )
+
+# Return a string with the board rendered in a human-friendly format
+def printable_board(board):
+    return "\n".join([ "".join(row) for row in board])
+
+# Add a friend to the board at the given position, and return a new board (doesn't change original)
+def add_friend(board, row, col):
+    return board[0:row] + [board[row][0:col] + ['F',] + board[row][col+1:]] + board[row+1:]
+
+# Get list of successors of given board state
+def successors(board):
+    return [ add_friend(board, r, c) for r in range(0, len(board)) for c in range(0,len(board[0])) if board[r][c] == '.' ]
+
+# check if board is a goal state
+def is_goal(board):
+    return count_friends(board) == K 
+
+def random_put_friends(d_flr,K):
+    l_frs=[]
+    remaining=K
+    while(remaining>0):
+       # copy=deepcopy(d_flr)
+       # copy=dict(filter(lambda x:x[1]!=[],copy.items()))
+        row=random.choice(list(d_flr.keys()))
+        while(d_flr[row]==[]):
+            row=random.choice(list(d_flr.keys()))
+        col=random.choice(d_flr[row])
+        d_flr[row].remove(col)
+        l_frs.append((row,col))
+        remaining-=1
+    return d_flr,l_frs
+
+def exist_obs(pos1,pos2,l_obs):
+    if(l_obs==[]):
+        return False
+    if(abs(pos1-pos2)==1):
+        return False
+    if(pos1>pos2):
+        pos1,pos2=pos2,pos1
+    l=0
+    r=len(l_obs)-1
+    while(l<=r):
+        mid=floor((l+r)/2)
+        if(l_obs[mid]>pos1 and l_obs[mid]<pos2):
+            return True
+        elif(l_obs[mid]>pos2):
+            r=mid-1
+        elif(l_obs[mid]<pos1):
+            l=mid+1
+    return False
+
+
+def calc_conflicts(l_frs,d_frs_r,d_frs_c,d_obs_r,d_obs_c):
+    l_confl=[[]]*len(l_frs)
+    for i in range(len(l_frs)):
+        for f in d_frs_r[l_frs[i][0]]:
+            if(i!=f):
+                if not exist_obs(l_frs[i][1],l_frs[f][1],d_obs_r[l_frs[i][0]]):
+                    l_confl[i].append(f)
+        for g in d_frs_c[l_frs[i][1]]:
+            if(i!=g):
+                if not exist_obs(l_frs[i][0],l_frs[g][0],d_obs_c[l_frs[i][1]]):
+                    l_confl[i].append(g)
+    return l_confl
+                
+def draw_board(l_frs,IUB_map):
+    for coord in l_frs:
+        IUB_map=add_friend(IUB_map,coord[0],coord[1])
+    return IUB_map
+
+def rand_move(l_confl,d_flr,l_frs,d_frs_r,d_frs_c,d_obs_r,d_obs_c,ind,nc):
+    coord=l_frs[ind]
+    #copy=deepcopy(d_flr)
+    #copy=dict(filter(lambda x:x[1]!=[],copy.items()))
+    row=random.choice(list(d_flr.keys()))
+    while(d_flr[row]==[]):
+        row=random.choice(list(d_flr.keys()))
+    col=random.choice(d_flr[row])
+        
+    if(d_flr[row]!=[]):
+        l_frs[ind]=(row,col)
+        d_flr[row].remove(col)
+        d_flr[coord[0]].append(coord[1])
+        d_flr[row].sort();d_flr[coord[0]].sort()
+        d_frs_r[coord[0]].remove(ind)
+        d_frs_c[coord[1]].remove(ind)
+        d_frs_r[row].append(ind)
+        d_frs_c[col].append(ind)
+        for l in l_confl:
+            if(ind in l):
+                l.remove(ind)
+        l_confl[ind]=[]
+        for f in d_frs_r[row]:
+            if(ind!=f):
+                if not exist_obs(col,l_frs[f][1],d_obs_r[row]):
+                    l_confl[ind].append(f)
+                    l_confl[f].append(ind)
+        for g in d_frs_c[col]:
+            if(ind!=g):
+                if not exist_obs(row,l_frs[g][0],d_obs_c[col]):
+                    l_confl[ind].append(g)
+                    l_confl[g].append(ind)
+        
+    return l_confl,l_frs,d_frs_r,d_frs_c,d_flr
+        
+       
+# Solve n-rooks!
+def solve(d_flr,d_obs_r,d_obs_c,c_mys,K,IUB_map):
+    tries=1000
+    d_flr,l_frs=random_put_friends(d_flr,K)
+    d_frs_r={x:[] for x in range(len(d_obs_r))}
+    d_frs_c={y:[] for y in range(len(d_obs_c))}
+    for i in range(len(l_frs)):
+        d_frs_r[l_frs[i][0]].append(i)
+    for j in range(len(l_frs)):
+        d_frs_c[l_frs[j][1]].append(j)
+
+    l_confl=calc_conflicts(l_frs,d_frs_r,d_frs_c,d_obs_r,d_obs_c)
+
+    maxc=0;maxind=0;maxl=[]
+    while tries>0:
+        tries-=1
+        for i in range(len(l_confl)):
+            if(len(l_confl[i])>maxc):
+                maxc=len(l_confl[i])
+        for i in range(len(l_confl)):
+            if(len(l_confl[i])==maxc):
+                maxl.append(i)
+        if(maxc==0):
+            return draw_board(l_frs,IUB_map)
+        else:
+            maxind=random.choice(maxl)
+            l_confl,l_frs,d_frs_r,d_frs_c,d_flr=rand_move(l_confl,d_flr,l_frs,d_frs_r,d_frs_c,d_obs_r,d_obs_c,maxind,maxc)
+        maxl=[];maxc=0;maxind=0
+    for f in l_frs:
+        d_flr[f[0]].append(f[1])
+        d_flr[f[0]].sort()
+    return False
+ 
+def gen_intervals(l):
+    i=0
+    res=[]
+    start=0
+    while(i<len(l)):
+        if(i+1==len(l) or l[i+1]-l[i]>1):
+            res.append(l[start:i+1])
+            start=i+1
+        i+=1
+    return res
+
+# Main Function
+if __name__ == "__main__":
+    IUB_map=parse_map(sys.argv[1])
+    if(IUB_map[-1]==[]):
+        IUB_map.pop()
+    # This is K, the number of friends
+    K = int(sys.argv[2])
+    if(K>len(IUB_map)*len(IUB_map[0])):
+        print("None");exit(0)
+    c_mys=()
+    d_flr={x:[] for x in range(len(IUB_map))}
+    d_flr_c={y:[] for y in range(len(IUB_map[0]))}
+    d_obs_r={x:[] for x in range(len(IUB_map))}
+    d_obs_c={y:[] for y in range(len(IUB_map[0]))}
+    for i in range(len(IUB_map)):
+        for j in range(len(IUB_map[0])):
+            if(IUB_map[i][j]=='.'):
+                d_flr[i].append(j)
+                d_flr_c[j].append(i)
+            elif(IUB_map[i][j]=='&' or IUB_map[i][j]=="@"):
+                d_obs_r[i].append(j)
+                d_obs_c[j].append(i)
+            elif(IUB_map[i][j]=='#'):
+                c_mys=(i,j)
+    print ("Starting from initial board:\n" + printable_board(IUB_map) + "\n\nLooking for solution...\n")
+    while True:
+        solution = solve(d_flr,d_obs_r,d_obs_c,c_mys,K,IUB_map)
+        if solution:
+            print ("Here's what we found:")
+            print (printable_board(solution) if solution else "None")
+            exit(0)
+
+
